@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/t103546/!svn/ver/46/trunk/src/locations/server
+END
+Protocol.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/t103546/!svn/ver/46/trunk/src/locations/server/Protocol.java
+END
+ClientSession.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/t103546/!svn/ver/46/trunk/src/locations/server/ClientSession.java
+END
+Server.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/t103546/!svn/ver/46/trunk/src/locations/server/Server.java
+END

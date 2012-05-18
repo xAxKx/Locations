@@ -1,0 +1,55 @@
+package locations.client;
+
+import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+/**
+ * Nime sisestamise aken.
+ * @author Taavi
+ *
+ */
+public class EnterNameWindow extends JFrame {
+	
+	private static final long serialVersionUID = 1L;
+	private JButton btnEnter = new JButton("OK");
+	private JTextField nameField = new JTextField();
+	private JLabel lblEnter = new JLabel("Enter your name:");
+	private PrintWriter netOut;
+	
+	public EnterNameWindow(PrintWriter netOut) {
+		this.netOut = netOut;
+		lblEnter.setSize(100, 25);
+		lblEnter.setPreferredSize(lblEnter.getSize());
+		
+		nameField.setSize(100, 25);
+		nameField.setPreferredSize(nameField.getSize());
+		
+		btnEnter.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				enter();
+			}
+		});
+		
+		add(lblEnter);
+		add(nameField);
+		add(btnEnter);
+	}
+
+	private void enter() {
+		if (nameField.getText().length() > 0)
+			netOut.println(nameField.getText());
+	}
+}

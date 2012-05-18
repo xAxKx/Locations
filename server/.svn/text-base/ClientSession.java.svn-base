@@ -1,0 +1,60 @@
+package locations.server;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+/**
+ * Kliendi lõim.
+ * @author Taavi
+ *
+ */
+class ClientSession extends Thread {
+	private Socket sock;
+	private BufferedReader netIn;
+	private PrintWriter netOut;
+	
+	/**
+	 * Uue kliendi threadi loomine.
+	 * @param sock socket
+	 * @throws IOException kui tekib viga, siis väljakutsuja sulgeb socketi (Server klassi all)
+	 */
+	public ClientSession(Socket sock) throws IOException {
+		this.sock = sock;
+		//kliendilt sõnumid
+		netIn = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		//kliendile sõnumid
+		netOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);		
+		start(); //kliendi töötsükkel
+	}
+	
+	/**
+	 * Kliendi töötsükkel.
+	 */
+	public void run() {
+		try {
+			Protocol protocol = new Protocol();
+			String fromClient, toClient;
+			
+			//protokolli käivitamine
+			netOut.println(protocol.processInput(""));
+			
+			//kui klient midagi sisestab
+			while ((fromClient = netIn.readLine()) != null) {
+//				toClient = protocol.processInput(fromClient);
+//				netOut.println(toClient);
+			}
+		} catch (IOException e) {
+			try {
+				System.out.println("Avarii kliendi " + getName() + " seansis: " + e.getMessage() );
+				sock.close();
+			} catch (IOException ee) {
+				throw new RuntimeException(ee);
+			}
+		}	
+	}
+}

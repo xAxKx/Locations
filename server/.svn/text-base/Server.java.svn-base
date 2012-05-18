@@ -1,0 +1,35 @@
+package locations.server;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+
+/**
+ * Serveri klass.
+ *
+ */
+public class Server {
+
+	/**
+	 * Serveri port.
+	 */
+	public static final int port = 8889;
+	
+	public static void main(String[] args) {
+		try {
+			ServerSocket serv = new ServerSocket(port);
+			while (true) { //serveri töötsükkel
+				Socket socket = serv.accept();	//ootab kuni klient ühendab
+				try {
+					new ClientSession(socket);	//kliendi lõime loomine
+				} catch (IOException e) {
+					socket.close();	//ühendust ei loodud, sulgeme sokli
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("IO viga :" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+}

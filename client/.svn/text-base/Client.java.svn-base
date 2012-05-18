@@ -1,0 +1,57 @@
+package locations.client;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/**
+ * Kliendi ühendamine.
+ * @author Taavi
+ *
+ */
+public class Client {
+
+	/**
+	 * Port, millel server jookseb.
+	 */
+	public static final int port = 8889;
+	
+	public static void main(String[] args) {
+		String serverName = "localhost";
+		Socket sock;
+		try {
+			InetAddress serverAddr = InetAddress.getByName(serverName);
+			try {
+				sock = new Socket(serverAddr, port);
+				
+				//serverilt sõnumid
+				BufferedReader netIn = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+				//serverile sõnumid
+				PrintWriter netOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
+				
+				String fromServer;
+				while ((fromServer = netIn.readLine()) != null) {
+					if ("NAME".equals(fromServer)) {
+						EnterNameWindow n = new EnterNameWindow(netOut);
+						Starter.run(n, 300, 80);
+					} else {
+						System.out.println("Server ütles: " + fromServer); //TEST
+					}
+				}			
+			} catch (ConnectException e) {
+				System.out.println("Ei õµnnestu luua ühendust serveriga " + serverAddr.getHostName() + ". Põhjus: " + e.getMessage());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (UnknownHostException e) {
+			System.out.println("Tundmatu server: " + e.getMessage());
+		}
+	}
+}

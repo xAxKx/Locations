@@ -1,0 +1,48 @@
+package locations.server;
+
+/**
+ * Serveri olek.
+ */
+enum ServerState {
+	WAITING, ASKEDNAME
+}
+
+/**
+ * Protokolli klass.
+ * M‰‰rab suhtluse toimimise j‰rjekorra jms.
+ * @author Taavi
+ *
+ */
+public class Protocol {
+	
+	private ServerState state = ServerState.WAITING;
+
+	/**
+	 * Saadab m‰ngijale sobiva info tagasi.
+	 * @param String m‰ngija sisend
+	 * @return String m‰ngijale tagasi
+	 */
+	public String processInput(String input) {
+		String output = null;
+		
+		switch (state) {
+		case WAITING:
+			output = "NAME";
+			state = ServerState.ASKEDNAME;
+			break;
+		
+		case ASKEDNAME:
+//			if (input.startsWith("NAME ")) {
+//				String name = input.replace("NAME ", "");
+//				output = "Welcome, " + name + "!";
+////				state = ServerState.PLAYING;
+//			} else {
+//				output = "Please enter your name (NAME [your name]):";
+//			}
+//			break;
+			
+		}
+		
+		return output;
+	}
+}
